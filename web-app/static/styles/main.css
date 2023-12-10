@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* {
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+input,
+textarea,
+select,
+option {
+    color: initial;
+    text-shadow: none;
+}
+
+.button,
+a.button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid transparent;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: normal;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.button:hover,
+a.button:hover {
+    background-color: rgba(50, 205, 50, 0.1);
+    color: limegreen;
+    border: 2px solid limegreen;
+    text-decoration: none;
+}
+
+body {
+    min-height: 100vh;
+    background-image: url("../images/appBackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    background-color: transparent;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    color: white;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-container form div {
+    margin-bottom: 20px;
+}
+
+.login-container form div label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.login-container form div input[type=text],
+.login-container form div input[type=password] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+.login-container form .button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.login-container a.button {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1rem;
+}
