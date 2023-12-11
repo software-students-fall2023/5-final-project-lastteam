@@ -4,8 +4,9 @@ import bcrypt
 from your_poker_news_fetcher_module import get_poker_news
 from your_poker_odds_api_module import get_poker_odds
 
-app = Flask(__name__)
-app.secret_key = 'secret'#[TO-DO]add secretkey_generator.py
+app = Flask(__name__, template_folder='templates')
+app.secret_key = 'secret'  # [TO-DO] add secretkey_generator.py
+
 
 # MongoDB configuration
 client = MongoClient('mongodb://localhost:27017/')#for development, [TO-DO] add configurations

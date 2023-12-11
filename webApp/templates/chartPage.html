@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="chart-container">
+    <h2 class="chart-title">Profit Over Time</h2>
+    <canvas id="lineChart"></canvas>
+    <h2 class="chart-title">Monthly Profit</h2>
+    <canvas id="histogram"></canvas>
+</div>
+
+<div class="sidebar">
+    <h2 class="sidebar-title">Menu</h2>
+    <nav class="sidebar-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</div>
+
+<script>
+    fetch('/session-data')
+        .then(response => response.json())
+        .then(data => {
+            const lineChartCtx = document.getElementById('lineChart').getContext('2d');
+            const histogramCtx = document.getElementById('histogram').getContext('2d');
+
+            // Render Line Chart
+            new Chart(lineChartCtx, {
+                type: 'line',
+                data: {
+                    labels: data.lineChartData.map(item => item.date),
+                    datasets: [{
+                        label: 'Profit over Time',
+                        data: data.lineChartData.map(item => item.profit),
+                    }]
+                }
+            });
+
+            // Render Histogram
+            new Chart(histogramCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.histogramData),
+                    datasets: [{
+                        label: 'Monthly Profit',
+                        data: Object.values(data.histogramData),
+                    }]
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching session data:', error));
+</script>
+
+</body>
+</html>

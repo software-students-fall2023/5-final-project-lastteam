@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change Username</title>
+</head>
+<body>
+    <h1 class="header">Change Username</h1>
+    <div class="sidebar">
+        <h2 class="sidebar-title">Menu</h2>
+        <nav class="sidebar-nav">
+            <a href="/my-sessions" class="nav-item">Session</a>
+            <a href="/search" class="nav-item">Search</a>
+            <a href="/settings" class="nav-item">User Settings</a>
+            <a href="/pokerMain" class="nav-item">Poker Main</a>
+            <a href="/logout" class="nav-item">Log Out</a>
+        </nav>
+    </div>
+    <div class="changeUsername-container">
+        {% if errorMessage %}
+            <div class="error-message">{{ errorMessage }}</div>
+        {% endif %}
+        {% if successMessage %}
+            <div class="success-message">{{ successMessage }}</div>
+        {% endif %}
+
+        <form action="/change-username" method="POST" id="changeUsernameForm">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+
+            <button class="button" type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
