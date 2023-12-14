@@ -1,0 +1,32 @@
+<!-- userSettings.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 class="sidebar-title">Menu</h2>
+        <nav class="sidebar-nav">
+            <a href="/my-sessions" class="nav-item">Session</a>
+            <a href="/search" class="nav-item">Search</a>
+            <a href="/settings" class="nav-item">User Settings</a>
+            <a href="/pokerMain" class="nav-item">Poker Main</a>
+            <a href="/logout" class="nav-item">Log Out</a>
+        </nav>
+    </div>
+
+    <div class="subHeader">
+        <h1>Settings</h1>
+    </div>
+    <div class="userSettings-container">
+        <div class="settings-options">
+            <form action="/delete-account" method="POST">
+                <a href="/settings/change-password" class="button">Change Password</a>
+                <a href="/settings/change-username" class="button">Change Username</a>
+                <button class="button" type="submit" onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.');">Delete Account</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

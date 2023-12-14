@@ -1,0 +1,41 @@
+<!-- viewSessions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <h1 class="subHeader">My Sessions</h1>
+    <div class="sidebar">
+        <h2 class="sidebar-title">Menu</h2>
+        <nav class="sidebar-nav">
+            <a href="/my-sessions" class="nav-item">Session</a>
+            <a href="/search" class="nav-item">Search</a>
+            <a href="/settings" class="nav-item">User Settings</a>
+            <a href="/pokerMain" class="nav-item">Poker Main</a>
+            <a href="/logout" class="nav-item">Log Out</a>
+        </nav>
+    </div>
+    <div class="viewSessions-container">
+        {% if sessions %}
+            <ul>
+                {% for session in sessions %}
+                    <li>
+                        <p>Date: {{ session.date }}</p>
+                        <p>Buy In: {{ session.buyIn }}</p>
+                        <p>Cash Out: {{ session.cashOut }}</p>
+                        <p>Profit: {{ session.profit }}</p>
+                        <p>Location: {{ session.location }}</p>
+                        <!-- Delete session form -->
+                        <form action="/delete-session/{{ session._id }}" method="POST">
+                            <button class="button" type="submit">Delete Session</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No sessions found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
