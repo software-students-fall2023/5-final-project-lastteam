@@ -68,10 +68,10 @@ def register():
         password = request.form.get('password')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        if find_user(username):  # Assuming find_user is a function to check if a user exists
+        if find_user(username): 
             return render_template('register.html', error='Username already used')
         else:
-            create_user(username, hashed_password, ...)  # Add additional required fields
+            create_user(username, hashed_password, email)
             return redirect('/login')
     return render_template('register.html')
 
@@ -129,8 +129,8 @@ def create_session():
                 'user_id': ObjectId(session.get('user_id')),
                 'date': request.form.get('date'),
                 'buyIn': request.form.get('buyIn'),
-                'cashOut': request.form.get('cashOut'),  # Add cashOut field
-                'location': request.form.get('location'),  # Add location field
+                'cashOut': request.form.get('cashOut'),  
+                'location': request.form.get('location'),  
             }
             sessions.insert_one(session_data) 
 
