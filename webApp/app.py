@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
-from pymongo import MongoClient
 import bcrypt
-from your_poker_news_fetcher_module import get_poker_news
-from your_poker_odds_api_module import get_poker_odds
+# Import your model functions
+from models import create_user, create_session
+
+#[TO-DO]import get_poker_news
+#[TO-DO]import get_poker_odds
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'secret'  # [TO-DO] add secretkey_generator.py
@@ -72,17 +74,14 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        user = poker_users.find_one({'username': username})
-        if user:
+
+        if find_user(username):  # Assuming find_user is a function to check if a user exists
             return render_template('register.html', error='Username already used')
         else:
-            poker_users.insert_one({'username': username, 'password': hashed_password, 'button_press_count': 0})
-            session['username'] = username
-            user = poker_users.find_one({'username': username})
-            session['user_id'] = str(user['_id'])
-            session['button_press_count'] = user['button_press_count']
+            create_user(username, hashed_password, ...)  # Add additional required fields
             return redirect('/login')
     return render_template('register.html')
+
 
 @app.route('/logout')
 def logout():
@@ -133,17 +132,19 @@ def create_session():
     if is_authenticated():
         if request.method == 'POST':
             # Process and save session data to the database
-            # Example: Retrieve data from form and insert into 'sessions' collection
-            # session_data = {
-            #     'user_id': ObjectId(session.get('user_id')),
-            #     'date': request.form.get('date'),
-            #     'buyIn': request.form.get('buyIn'),
-            #     # Add other session data fields here
-            # }
-            # sessions.insert_one(session_data)
+            session_data = {
+                'user_id': ObjectId(session.get('user_id')),
+                'date': request.form.get('date'),
+                'buyIn': request.form.get('buyIn'),
+                'cashOut': request.form.get('cashOut'),  # Add cashOut field
+                'location': request.form.get('location'),  # Add location field
+            }
+            sessions.insert_one(session_data) 
+
             return redirect('/my-sessions')
         return render_template('createSession.html', title="Create a Session")
     return redirect('/login')
+
 
 @app.route('/view-sessions')
 def view_sessions():
