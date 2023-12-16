@@ -7,7 +7,7 @@ from bson import ObjectId
 def create_user(username, password, email):
     user = {
         "username": username,
-        "password": password,  # Ensure this is hashed
+        "password": password,  
         "email": email,
         "buttonPressCount": 0,
         "sessions": []
@@ -28,3 +28,4 @@ def create_session(user_id, date, buyIn, cashOut, highlights, location):
     return db.sessions.insert_one(session).inserted_id
 
 
+#[TO-DO, impelemnt findUser, deleteUser, updateUser]
