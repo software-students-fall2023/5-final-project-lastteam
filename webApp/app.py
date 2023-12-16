@@ -7,14 +7,7 @@ from models import create_user, create_session
 #[TO-DO]import get_poker_odds
 
 app = Flask(__name__, template_folder='templates')
-app.secret_key = 'secret'  # [TO-DO] add secretkey_generator.py
-
-
-# MongoDB configuration
-client = MongoClient('mongodb://localhost:27017/')#for development, [TO-DO] add configurations
-db = client['database_name']#change later
-poker_users = db['poker_users']
-sessions = db['sessions']
+app.secret_key = 'b065a21f5ea5369fc127445032f880a6957ed744999c7c86'  
 
 # Constants
 max_presses = 50
