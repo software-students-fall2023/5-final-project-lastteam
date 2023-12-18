@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
 
-# from your_poker_news_fetcher_module import get_poker_news
+from pokerNewsFetcher import get_poker_news
 # from your_poker_odds_api_module import get_poker_odds
 
 app = Flask(__name__, template_folder="templates")
@@ -279,13 +279,21 @@ def change_password():
         return redirect("/login")
 
     if request.method == "POST":
+        current_password = request.form.get("currentPassword")
+        new_password = request.form.get("newPassword")
         user_id = session.get("user_id")
-        new_password = request.form.get("new_password")
-        hashed_password = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
-        poker_users.update_one({"_id": ObjectId(user_id)}, {"$set": {"password": hashed_password}})
-        return redirect("/settings?success=passwordChanged")
+
+        user = poker_users.find_one({"_id": ObjectId(user_id)})
+        if user and bcrypt.checkpw(current_password.encode('utf-8'), user['password']):
+            hashed_password = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+            poker_users.update_one({"_id": ObjectId(user_id)}, {"$set": {"password": hashed_password}})
+            return redirect("/settings?success=passwordChanged")
+        else:
+            error = "Current password is incorrect!"
+            return render_template("changePassword.html", error=error)
 
     return render_template("changePassword.html")
+
 
 
 
@@ -295,19 +303,19 @@ def change_username():
         return redirect("/login")
 
     if request.method == "POST":
+        new_username = request.form.get("newUsername")
         user_id = session.get("user_id")
-        new_username = request.form.get("new_username")
 
         if poker_users.find_one({"username": new_username}):
             return render_template("changeUsername.html", error="Username already exists!")
 
         poker_users.update_one({"_id": ObjectId(user_id)}, {"$set": {"username": new_username}})
-
         session["username"] = new_username
 
         return redirect("/settings?success=usernameChanged")
 
     return render_template("changeUsername.html")
+
 
 
 
@@ -340,12 +348,30 @@ def search_result():
     if not is_authenticated():
         return redirect("/login")
 
-    search_query = request.form.get("search_query")
-    # Implement your search logic here and retrieve the search results
-    # Example: found_sessions = sessions.find({"some_field": search_query})
-    found_sessions = sessions.find({"some_field": search_query})
+    # Retrieve form data
+    date = request.form.get("date")
+    buy_in = request.form.get("buyIn")
+    location = request.form.get("location")
+    profit_loss_selection = request.form.get("profitLossSelection")
 
-    return render_template("searchResult.html", sessions=found_sessions)
+    # Build query based on form data
+    query = {}
+    if date:
+        query["date"] = date
+    if buy_in:
+        query["buyIn"] = float(buy_in)  
+    if location:
+        query["location"] = location
+    if profit_loss_selection:
+        if profit_loss_selection == "profit":
+            query["profit"] = {"$gt": 0}
+        elif profit_loss_selection == "loss":
+            query["profit"] = {"$lt": 0}
+
+    # Perform the search
+    found_sessions = sessions.find(query)
+
+    return render_template("searchResult.html", sessions=list(found_sessions))
 
 
 
