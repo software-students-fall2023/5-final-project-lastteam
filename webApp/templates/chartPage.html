@@ -25,37 +25,36 @@
 </div>
 
 <script>
-    fetch('/session-data')
-        .then(response => response.json())
-        .then(data => {
-            const lineChartCtx = document.getElementById('lineChart').getContext('2d');
-            const histogramCtx = document.getElementById('histogram').getContext('2d');
+    // Assume `lineChartData` and `histogramData` are passed from Flask and available in the template
+    const lineChartData = JSON.parse('{{ line_chart_data | safe }}');
+    const histogramData = JSON.parse('{{ histogram_data | safe }}');
 
-            // Render Line Chart
-            new Chart(lineChartCtx, {
-                type: 'line',
-                data: {
-                    labels: data.lineChartData.map(item => item.date),
-                    datasets: [{
-                        label: 'Profit over Time',
-                        data: data.lineChartData.map(item => item.profit),
-                    }]
-                }
-            });
+    const lineChartCtx = document.getElementById('lineChart').getContext('2d');
+    const histogramCtx = document.getElementById('histogram').getContext('2d');
 
-            // Render Histogram
-            new Chart(histogramCtx, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.histogramData),
-                    datasets: [{
-                        label: 'Monthly Profit',
-                        data: Object.values(data.histogramData),
-                    }]
-                }
-            });
-        })
-        .catch(error => console.error('Error fetching session data:', error));
+    // Render Line Chart
+    new Chart(lineChartCtx, {
+        type: 'line',
+        data: {
+            labels: lineChartData.map(item => item.date),
+            datasets: [{
+                label: 'Profit over Time',
+                data: lineChartData.map(item => item.profit),
+            }]
+        }
+    });
+
+    // Render Histogram
+    new Chart(histogramCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(histogramData),
+            datasets: [{
+                label: 'Monthly Profit',
+                data: Object.values(histogramData),
+            }]
+        }
+    });
 </script>
 
 </body>

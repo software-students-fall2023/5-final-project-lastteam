@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
 
-# from your_poker_news_fetcher_module import get_poker_news
+from pokerNewsFetcher import get_poker_news
 # from your_poker_odds_api_module import get_poker_odds
 
 app = Flask(__name__, template_folder="templates")
@@ -31,7 +31,7 @@ def is_authenticated():
 def home():
     if is_authenticated():
         # return render_template("pokerMain.html", show_logout_button=True)
-        return render_template("testPokerMain.html", username=session["username"])
+        return render_template("pokerMain.html", username=session["username"])
 
     return render_template("home.html")
 
@@ -39,7 +39,14 @@ def home():
 @app.route("/pokerMain")
 def poker_main():
     if is_authenticated():
-        # news_items = get_poker_news()
+        try:
+            news_items = get_poker_news()
+            print(news_items)
+        except Exception as e:
+            news_items = []
+            error_message = "Error fetching poker news."
+            # Optionally, handle the error more gracefully, perhaps logging it or informing the user
+
         # odds = None
         # hand = request.args.get("hand")
         # if hand:
@@ -54,7 +61,7 @@ def poker_main():
         #     newsItems=news_items,
         #     odds=odds,
         # )
-        return render_template("testPokerMain.html", username=session["username"])
+        return render_template("pokerMain.html", newsItems=news_items, username=session["username"], error=error_message if 'error_message' in locals() else None)
 
     return redirect("/login")
 
@@ -124,6 +131,7 @@ def register():
 
 
 @app.route("/logout")
+
 def logout():
     session.pop("user_id", None)
     session.pop("username", None)
@@ -176,20 +184,20 @@ def my_sessions():
 
 @app.route("/create-session", methods=["GET", "POST"])
 def create_session():
-    if is_authenticated():
-        if request.method == "POST":
-            # Process and save session data to the database
-            # Example: Retrieve data from form and insert into 'sessions' collection
-            # session_data = {
-            #     'user_id': ObjectId(session.get('user_id')),
-            #     'date': request.form.get('date'),
-            #     'buyIn': request.form.get('buyIn'),
-            #     # Add other session data fields here
-            # }
-            # sessions.insert_one(session_data)
-            return redirect("/my-sessions")
-        return render_template("createSession.html", title="Create a Session")
-    return redirect("/login")
+    if not is_authenticated():
+        return redirect("/login")
+
+    if request.method == "POST":
+        session_data = {
+            "user_id": ObjectId(session.get("user_id")),
+            "date": request.form.get("date"),
+            "buyIn": request.form.get("buyIn"),
+            "cashOut": request.form.get("cashOut"),
+        }
+        sessions.insert_one(session_data)
+        return redirect("/my-sessions")
+
+    return render_template("createSession.html")
 
 
 @app.route("/view-sessions")
@@ -218,21 +226,44 @@ def delete_session(session_id):
 
 @app.route("/session-data")
 def session_data():
-    if is_authenticated():
-        # Fetch session data from the 'sessions' collection
-        # Example: Retrieve session data for the logged-in user
-        # user_id = session.get('user_id')
-        # user_sessions = sessions.find({'user_id': ObjectId(user_id)})
-        # Process and format the session data as needed
-        # Return the formatted data as JSON
-        return jsonify({"lineChartData": [], "histogramData": {}})
-    return redirect("/login")
+    if not is_authenticated():
+        return redirect("/login")
 
+    user_id = session.get("user_id")
+    user_sessions = sessions.find({"user_id": ObjectId(user_id)})
+    # Process and format the session data as needed
+    # Return the formatted data as JSON
+    return jsonify({"sessions": list(user_sessions)})
+
+
+
+from bson.json_util import dumps
+from datetime import datetime
 
 @app.route("/data-analysis")
 def data_analysis():
     if is_authenticated():
-        return render_template("chartPage.html")
+        user_id = session.get("user_id")
+
+        # Fetch sessions and process the data for charts
+        user_sessions = sessions.find({"user_id": ObjectId(user_id)})
+
+        # Prepare data for line chart (profit over time)
+        line_chart_data = [
+            {'date': session['date'], 'profit': session['cashOut'] - session['buyIn']}
+            for session in user_sessions
+        ]
+
+        # Prepare data for histogram (monthly profit)
+        histogram_data = {}
+        for session in user_sessions:
+            month = datetime.strptime(session['date'], "%Y-%m-%d").strftime("%b")
+            profit = session['cashOut'] - session['buyIn']
+            histogram_data[month] = histogram_data.get(month, 0) + profit
+
+        return render_template("chartPage.html", 
+                               line_chart_data=dumps(line_chart_data), 
+                               histogram_data=dumps(histogram_data))
 
 
 @app.route("/settings")
@@ -244,34 +275,52 @@ def user_settings():
 
 @app.route("/settings/change-password", methods=["GET", "POST"])
 def change_password():
-    if is_authenticated():
-        if request.method == "POST":
-            # Process and update the user's password in the database
-            # Example: Retrieve data from form and update the user's password
-            # user_id = session.get('user_id')
-            # new_password = request.form.get('new_password')
-            # hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-            # poker_users.update_one({'_id': ObjectId(user_id)}, {'$set': {'password': hashed_password}})
+    if not is_authenticated():
+        return redirect("/login")
+
+    if request.method == "POST":
+        current_password = request.form.get("currentPassword")
+        new_password = request.form.get("newPassword")
+        user_id = session.get("user_id")
+
+        user = poker_users.find_one({"_id": ObjectId(user_id)})
+        if user and bcrypt.checkpw(current_password.encode('utf-8'), user['password']):
+            hashed_password = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+            poker_users.update_one({"_id": ObjectId(user_id)}, {"$set": {"password": hashed_password}})
             return redirect("/settings?success=passwordChanged")
-        return render_template("changePassword.html")
+        else:
+            error = "Current password is incorrect!"
+            return render_template("changePassword.html", error=error)
+
+    return render_template("changePassword.html")
 
 
-# @app.route("/settings/change-username", methods=["GET", "POST"])
-# def change_username():
-#     if is_authenticated():
-#         if request.method == "POST":
-#             # Process and update the user's username in the database
-#             # Example: Retrieve data from form and update the user's username
-#             # user_id = session.get('user_id')
-#             # new_username = request.form.get('new_username')
-#             # poker_users.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': new_username}})
-#             session["username"] = new_username
-#             return redirect("/settings?success=usernameChanged")
-#         return render_template("changeUsername.html")
+
+
+@app.route("/settings/change-username", methods=["GET", "POST"])
+def change_username():
+    if not is_authenticated():
+        return redirect("/login")
+
+    if request.method == "POST":
+        new_username = request.form.get("newUsername")
+        user_id = session.get("user_id")
+
+        if poker_users.find_one({"username": new_username}):
+            return render_template("changeUsername.html", error="Username already exists!")
+
+        poker_users.update_one({"_id": ObjectId(user_id)}, {"$set": {"username": new_username}})
+        session["username"] = new_username
+
+        return redirect("/settings?success=usernameChanged")
+
+    return render_template("changeUsername.html")
+
+
 
 
 @app.route("/delete-account", methods=["POST"])
-def delete_account():
+def delete_account(): 
     if is_authenticated():
         user_id = session.get("user_id")
         poker_users.delete_one({"_id": ObjectId(user_id)})
@@ -282,28 +331,48 @@ def delete_account():
         return "Account and associated sessions deleted successfully."
 
 
-# @app.route("/search", methods=["GET", "POST"])
-# def search():
-#     if is_authenticated():
-#         if request.method == "POST":
-#             # Process and execute the search query
-#             # Example: Retrieve search parameters from the form and query the database
-#             # Implement your search logic here
-#             return render_template("searchResult.html", sessions=found_sessions)
-#         return render_template("search.html")
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if not is_authenticated():
+        return redirect("/login")
+
+    if request.method == "POST":
+        search_query = request.form.get("search_query")
+        return redirect(url_for("search_result", query=search_query))
+
+    return render_template("search.html")
 
 
-# @app.route("/search-result", methods=["POST"])
-# def search_result():
-#     if is_authenticated() and request.method == "POST":
-#         # Process and execute the search query
-#         # Example: Retrieve search parameters from the form and query the database
-#         # Implement your search logic here and retrieve the search results
-#         # Example: found_sessions = sessions.find({ ... })
+@app.route("/search-result", methods=["POST"])
+def search_result():
+    if not is_authenticated():
+        return redirect("/login")
 
-#         # Pass the search results to the template for rendering
-#         return render_template("searchResult.html", sessions=found_sessions)
-#     return redirect("/login")
+    # Retrieve form data
+    date = request.form.get("date")
+    buy_in = request.form.get("buyIn")
+    location = request.form.get("location")
+    profit_loss_selection = request.form.get("profitLossSelection")
+
+    # Build query based on form data
+    query = {}
+    if date:
+        query["date"] = date
+    if buy_in:
+        query["buyIn"] = float(buy_in)  
+    if location:
+        query["location"] = location
+    if profit_loss_selection:
+        if profit_loss_selection == "profit":
+            query["profit"] = {"$gt": 0}
+        elif profit_loss_selection == "loss":
+            query["profit"] = {"$lt": 0}
+
+    # Perform the search
+    found_sessions = sessions.find(query)
+
+    return render_template("searchResult.html", sessions=list(found_sessions))
+
 
 
 if __name__ == "__main__":
