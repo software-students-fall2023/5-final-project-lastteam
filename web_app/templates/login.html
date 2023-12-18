@@ -12,7 +12,12 @@
     </div>
 
     <div class="login-container">
-        <form action="">
+        {% if error %}
+            <div class="error-message">
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
+        <form action="/login" method="POST">
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -22,7 +27,7 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button class="button" type="submit">Login</button>
-            <a href="#" class="button">Register</a>
+            <a href="/register" class="button">Register</a>
         </form>
     </div>
 </body>

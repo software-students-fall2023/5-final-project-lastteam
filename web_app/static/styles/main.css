@@ -119,3 +119,19 @@ body {
     margin-top: 10px;
     font-size: 1rem;
 }
+
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.register-container button {
+    margin: 10px 0;
+}
+
+.error-message span {
+    color: red;
+}

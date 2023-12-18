@@ -8,6 +8,10 @@ flask = "*"
 pymongo = "*"
 pylint = "*"
 black = "*"
+flask-cors = "*"
+werkzeug = "*"
+flask-session = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
