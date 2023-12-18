@@ -1,5 +1,5 @@
 FROM python:3.8-slim
-WORKDIR /web_app
+WORKDIR /webApp
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 ENV FLASK_APP=app.py

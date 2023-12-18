@@ -12,6 +12,7 @@ flask-cors = "*"
 werkzeug = "*"
 flask-session = "*"
 python-dotenv = "*"
+bcrypt = "*"
 
 [dev-packages]
 
