@@ -1,4 +1,4 @@
-![Workflow Status](https://github.com/software-students-fall2023/5-final-project-lastteam/actions/workflows/lint.yml/badge.svg?branch=main&kill_cache=1)
+[![WebAppCI/CD](https://github.com/software-students-fall2023/5-final-project-lastteam/actions/workflows/web-app.yml/badge.svg?branch=main)](https://github.com/software-students-fall2023/5-final-project-lastteam/actions/workflows/web-app.yml)
 
 # Final Project
 
