@@ -1,0 +1,36 @@
+<!-- searchResult.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <h1 class="subHeader">Search Results</h1>
+    <div class="sidebar">
+        <h2 class="sidebar-title">Menu</h2>
+        <nav class="sidebar-nav">
+            <a href="/my-sessions" class="nav-item">Session</a>
+            <a href="/search" class="nav-item">Search</a>
+            <a href="/settings" class="nav-item">User Settings</a>
+            <a href="/pokerMain" class="nav-item">Poker Main</a>
+            <a href="/logout" class="nav-item">Log Out</a>
+        </nav>
+    </div>
+    {% if sessions %}
+    <ul>
+        {% for session in sessions %}
+            <li>
+                <p>Date: {{ session.date }}</p>
+                <p>Buy In: {{ session.buyIn }}</p>
+                <p>Cash Out: {{ session.cashOut }}</p>
+                <p>Profit: {{ session.profit }}</p>
+                <p>Location: {{ session.location }}</p>
+                <!-- Add other session details as needed -->
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No sessions found matching your criteria.</p>
+    {% endif %}
+</body>
+</html>
+

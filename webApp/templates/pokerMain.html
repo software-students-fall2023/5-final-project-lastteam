@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script>
+
+        //global variables for limiting button press 
+        let buttonPressCount = 0;
+        const maxPresses = 50;
+        window.onload = function() {
+            fetch('/getButtonPressCount')
+                .then(response => response.json())
+                .then(data => {
+                    buttonPressCount = data.count;
+                    document.getElementById('pressCount').innerText = 'Requests made: ' + buttonPressCount;
+    
+                    if (buttonPressCount >= maxPresses) {
+                        document.getElementById('oddsButton').disabled = true;
+                        document.getElementById('pressCount').innerText = 'Limit reached. No more requests allowed.';
+                    }
+                })
+                .catch(error => console.error('Error fetching button press count:', error));
+        };
+       
+        // Function to fetch poker odds when a user submits their hand
+        function fetchPokerOdds() {
+            const hand = document.getElementById('handInput').value;
+            if (hand) {
+    
+            fetch('/incrementButtonPress', { method: 'POST' }).then(response => response.json())
+            .then(data => {
+                if (!data.allowed) {
+                    document.getElementById('oddsButton').disabled = true;
+                    document.getElementById('pressCount').innerText = 'Limit reached. No more requests allowed.';
+                    return;
+                }
+    
+                buttonPressCount = data.count;
+                document.getElementById('pressCount').innerText = 'Requests made: ' + buttonPressCount;
+    
+    
+                fetch(`/getPokerOdds?hand=${encodeURIComponent(hand)}`)
+                    .then(response => response.json())
+                    .then(odds => {
+                        if (odds && odds.data && odds.data[0] && odds.data[0].hole_cards){
+                            const indicativeExpectedValue = odds.data[0].hole_cards.indicative_expected_value;
+                            document.getElementById('oddsResult').innerText = 'Indicative Expected Value: ' + indicativeExpectedValue;
+    
+                        }else{
+                            document.getElementById('oddsResult').innerText = 'Expected value not available';
+    
+                        }
+                        //document.getElementById('oddsResult').innerText = JSON.stringify(odds);
+                    })
+                    .catch(error => console.error('Error fetching poker odds:', error));
+    
+    
+    
+    
+            }).catch(error => console.error('Error incrementing button press:', error));
+    
+                
+            }
+            else{
+                alert('no input provided. enter [A,K,10,9,......]s for spades, c for clubs, d for diamonds, or h for heart. ')
+                console.log('hand is null');
+            }
+        }
+    </script>
+<head>
+    <title>Poker Analysis Pro</title>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 class="sidebar-title">Menu</h2>
+        <nav class="sidebar-nav">
+            <a href="/my-sessions" class="nav-item">Session</a>
+            <a href="/search" class="nav-item">Search</a>
+            <a href="/settings" class="nav-item">User Settings</a>
+            <a href="/pokerMain" class="nav-item">Poker Main</a>
+            <a href="/logout" class="nav-item">Log Out</a>
+        </nav>
+    </div>
+
+    <div class="header">
+        <h1>{{ username }}'s Poker Home</h1>
+    </div>
+    <div class="content-container">
+        <div class="news-container">
+            <h2>Poker News</h2>
+            <ul>
+                {% for newsItem in newsItems %}
+                    <li>
+                        <a href="{{ newsItem.link }}" target="_blank">{{ newsItem.title }}</a>
+                        <p>{{ newsItem.contentSnippet }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="pokerOddsDisplay">
+            <form onsubmit="event.preventDefault(); fetchPokerOdds();">
+                <input type="text" id="handInput" placeholder="Enter hand">
+                <button type="submit" id="oddsButton">Get Odds</button>
+            </form>
+            <div id="pressCount">Requests made: {{ buttonPressCount }}</div>
+            <div id="warning">WARNING: do not request over 50 times, or the external API will make me broke</div>
+            <div id="oddsResult">Input Examples: Ace of Club: Ac, Nine of Spades: 9s. This calculator will give you the expected value of each poker hand at pre-flop. Odds will be displayed here.</div>
+        </div>
+    </div>
+</body>
+</html>
