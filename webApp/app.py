@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
@@ -176,9 +176,7 @@ def my_sessions():
     if is_authenticated():
         user_id = session.get("user_id")
         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
-        return render_template(
-            "mySessions.html", title="My Sessions", sessions=user_sessions
-        )
+        return render_template("mySessions.html", title="My Sessions", sessions=user_sessions,username=session["username"])
     return redirect("/login")
 
 
@@ -188,16 +186,33 @@ def create_session():
         return redirect("/login")
 
     if request.method == "POST":
+        # Extract session information from form data
+        user_id = session.get("user_id")
+        date = request.form.get("date")
+        buyIn = float(request.form.get("buyIn"))
+        cashOut = float(request.form.get("cashOut"))
+        location = request.form.get("location")
+
+        # Calculate profit
+        profit = cashOut - buyIn
+
+        # Prepare session data with calculated profit
         session_data = {
-            "user_id": ObjectId(session.get("user_id")),
-            "date": request.form.get("date"),
-            "buyIn": request.form.get("buyIn"),
-            "cashOut": request.form.get("cashOut"),
+            "user_id": ObjectId(user_id),
+            "date": date,
+            "buyIn": buyIn,
+            "cashOut": cashOut,
+            "profit": profit,
+            "location": location
         }
+
+        # Insert the session data into the database
         sessions.insert_one(session_data)
+
         return redirect("/my-sessions")
 
-    return render_template("createSession.html")
+    return render_template("createSession.html", username=session["username"])
+
 
 
 @app.route("/view-sessions")
@@ -205,7 +220,7 @@ def view_sessions():
     if is_authenticated():
         user_id = session.get("user_id")
         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
-        return render_template("viewSessions.html", sessions=user_sessions)
+        return render_template("viewSessions.html", sessions=user_sessions,  username=session["username"])
     return redirect("/login")
 
 
@@ -240,36 +255,36 @@ from bson.json_util import dumps
 from datetime import datetime
 
 
-@app.route("/data-analysis")
-def data_analysis():
-    if is_authenticated():
-        user_id = sessions.get("user_id")
-
-        # Fetch sessions and process the data for charts
-        user_sessions = sessions.find({"user_id": ObjectId(user_id)})
-
-        # Prepare data for line chart (profit over time)
-        line_chart_data = [
-            {'date': session['date'], 'profit': session['cashOut'] - session['buyIn']}
-            for session in user_sessions
-        ]
-
-        # Prepare data for histogram (monthly profit)
-        histogram_data = {}
-        for session in user_sessions:
-            month = datetime.strptime(session['date'], "%Y-%m-%d").strftime("%b")
-            profit = session['cashOut'] - session['buyIn']
-            histogram_data[month] = histogram_data.get(month, 0) + profit
-
-        return render_template("chartPage.html",
-                               line_chart_data=dumps(line_chart_data),
-                               histogram_data=dumps(histogram_data))
+# @app.route("/data-analysis")
+# def data_analysis():
+#     if is_authenticated():
+#         user_id = sessions.get("user_id")
+#
+#         # Fetch sessions and process the data for charts
+#         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
+#
+#         # Prepare data for line chart (profit over time)
+#         line_chart_data = [
+#             {'date': session['date'], 'profit': session['cashOut'] - session['buyIn']}
+#             for session in user_sessions
+#         ]
+#
+#         # Prepare data for histogram (monthly profit)
+#         histogram_data = {}
+#         for session in user_sessions:
+#             month = datetime.strptime(session['date'], "%Y-%m-%d").strftime("%b")
+#             profit = session['cashOut'] - session['buyIn']
+#             histogram_data[month] = histogram_data.get(month, 0) + profit
+#
+#         return render_template("chartPage.html",
+#                                line_chart_data=dumps(line_chart_data),
+#                                histogram_data=dumps(histogram_data))
 
 
 @app.route("/settings")
 def user_settings():
     if is_authenticated():
-        return render_template("userSettings.html")
+        return render_template("userSettings.html", username=session["username"])
     return redirect("/login")
 
 
@@ -336,7 +351,7 @@ def search():
         search_query = request.form.get("search_query")
         return redirect(url_for("search_result", query=search_query))
 
-    return render_template("search.html")
+    return render_template("search.html", username=session["username"])
 
 
 @app.route("/search-result", methods=["POST"])
@@ -367,7 +382,7 @@ def search_result():
     # Perform the search
     found_sessions = sessions.find(query)
 
-    return render_template("searchResult.html", sessions=list(found_sessions))
+    return render_template("searchResult.html", sessions=list(found_sessions), username=session["username"])
 
 
 if __name__ == "__main__":
