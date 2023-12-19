@@ -176,9 +176,7 @@ def my_sessions():
     if is_authenticated():
         user_id = session.get("user_id")
         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
-        return render_template(
-            "mySessions.html", title="My Sessions", sessions=user_sessions
-        )
+        return render_template("mySessions.html", title="My Sessions", sessions=user_sessions,username=session["username"])
     return redirect("/login")
 
 
@@ -213,7 +211,7 @@ def create_session():
 
         return redirect("/my-sessions")
 
-    return render_template("createSession.html")
+    return render_template("createSession.html", username=session["username"])
 
 
 
@@ -222,7 +220,7 @@ def view_sessions():
     if is_authenticated():
         user_id = session.get("user_id")
         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
-        return render_template("viewSessions.html", sessions=user_sessions)
+        return render_template("viewSessions.html", sessions=user_sessions,  username=session["username"])
     return redirect("/login")
 
 
@@ -257,36 +255,36 @@ from bson.json_util import dumps
 from datetime import datetime
 
 
-@app.route("/data-analysis")
-def data_analysis():
-    if is_authenticated():
-        user_id = sessions.get("user_id")
-
-        # Fetch sessions and process the data for charts
-        user_sessions = sessions.find({"user_id": ObjectId(user_id)})
-
-        # Prepare data for line chart (profit over time)
-        line_chart_data = [
-            {'date': session['date'], 'profit': session['cashOut'] - session['buyIn']}
-            for session in user_sessions
-        ]
-
-        # Prepare data for histogram (monthly profit)
-        histogram_data = {}
-        for session in user_sessions:
-            month = datetime.strptime(session['date'], "%Y-%m-%d").strftime("%b")
-            profit = session['cashOut'] - session['buyIn']
-            histogram_data[month] = histogram_data.get(month, 0) + profit
-
-        return render_template("chartPage.html",
-                               line_chart_data=dumps(line_chart_data),
-                               histogram_data=dumps(histogram_data))
+# @app.route("/data-analysis")
+# def data_analysis():
+#     if is_authenticated():
+#         user_id = sessions.get("user_id")
+#
+#         # Fetch sessions and process the data for charts
+#         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
+#
+#         # Prepare data for line chart (profit over time)
+#         line_chart_data = [
+#             {'date': session['date'], 'profit': session['cashOut'] - session['buyIn']}
+#             for session in user_sessions
+#         ]
+#
+#         # Prepare data for histogram (monthly profit)
+#         histogram_data = {}
+#         for session in user_sessions:
+#             month = datetime.strptime(session['date'], "%Y-%m-%d").strftime("%b")
+#             profit = session['cashOut'] - session['buyIn']
+#             histogram_data[month] = histogram_data.get(month, 0) + profit
+#
+#         return render_template("chartPage.html",
+#                                line_chart_data=dumps(line_chart_data),
+#                                histogram_data=dumps(histogram_data))
 
 
 @app.route("/settings")
 def user_settings():
     if is_authenticated():
-        return render_template("userSettings.html")
+        return render_template("userSettings.html", username=session["username"])
     return redirect("/login")
 
 
