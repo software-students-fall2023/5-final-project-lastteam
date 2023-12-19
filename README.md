@@ -8,6 +8,8 @@ Build a containerized poker hand analysis app with CI/CD pipelines. See [instruc
 
 Click on the above text to view the deployed demo!
 
+### [DockerHub Image](https://hub.docker.com/repository/docker/wwxihan/pocker-app/general)
+
 ## Team Members:
 
 - [Merlin Li](https://github.com/wwxihan2)
@@ -118,3 +120,6 @@ docker compose down
 # Starter data demo
 
 create user name and password as you wish, and create as many sessions for poker. Make sure you are logged in before using any features.
+
+## Test Coverage
+![](coverage.png)
