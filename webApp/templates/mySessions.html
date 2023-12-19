@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+    <title>My Sessions</title>
 </head>
 <body>
-    <header class="header">
-        <h1>Session Manager</h1>
-    </header>
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
 
-    <aside class="sidebar">
-        <h2 class="sidebar-title">Menu</h2>
-        <nav class="sidebar-nav">
-            <a href="/my-sessions" class="nav-item">Session</a>
-            <a href="/search" class="nav-item">Search</a>
-            <a href="/settings" class="nav-item">User Settings</a>
-            <a href="/pokerMain" class="nav-item">Poker Main</a>
-            <a href="/logout" class="nav-item">Log Out</a>
-        </nav>
-    </aside>
-
-    <div class="mySessions-container">
-        <div class="session-options">
-            <div class="session-option">
-                <a href="/view-sessions" class="button">View My Sessions</a>
-                <img src="/images/view.png" alt="View Sessions">
-            </div>
-            <div class="session-option">
-                <a href="/create-session" class="button">Create a Session</a>
-                <img src="/images/create.png" alt="Create Session">
-            </div>
-            <div class="session-option">
-                <a href="/data-analysis" class="button">Chart Analysis</a>
-                <img src="/images/chart.png" alt="Chart Analysis">
-            </div>
-        </div>
+<div class="mySessions-container">
+    <div class="session-options">
+        <a href="/view-sessions" class="button session-button">
+            <img src="/images/view.png" alt="View Sessions">
+            View My Sessions
+        </a>
+        <a href="/create-session" class="button session-button">
+            <img src="/images/create.png" alt="Create Session">
+            Create a Session
+        </a>
+        <a href="/data-analysis" class="button session-button">
+            <img src="/images/chart.png" alt="Chart Analysis">
+            Chart Analysis
+        </a>
     </div>
+</div>
 </body>
 </html>
+
 

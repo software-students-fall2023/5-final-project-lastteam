@@ -1,32 +1,43 @@
-<!-- userSettings.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+    <title>Settings</title>
 </head>
 <body>
-    <div class="sidebar">
-        <h2 class="sidebar-title">Menu</h2>
-        <nav class="sidebar-nav">
-            <a href="/my-sessions" class="nav-item">Session</a>
-            <a href="/search" class="nav-item">Search</a>
-            <a href="/settings" class="nav-item">User Settings</a>
-            <a href="/pokerMain" class="nav-item">Poker Main</a>
-            <a href="/logout" class="nav-item">Log Out</a>
-        </nav>
-    </div>
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item active">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
 
-    <div class="subHeader">
-        <h1>Settings</h1>
+<div class="subHeader">
+    <h1>Settings</h1>
+</div>
+<div class="userSettings-container">
+    <div class="settings-options">
+        <form action="/delete-account" method="POST">
+            <a href="/settings/change-password" class="button">Change Password</a>
+            <a href="/settings/change-username" class="button">Change Username</a>
+            <button class="button delete-account" type="submit">
+                Delete Account
+            </button>
+        </form>
     </div>
-    <div class="userSettings-container">
-        <div class="settings-options">
-            <form action="/delete-account" method="POST">
-                <a href="/settings/change-password" class="button">Change Password</a>
-                <a href="/settings/change-username" class="button">Change Username</a>
-                <button class="button" type="submit" onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.');">Delete Account</button>
-            </form>
-        </div>
-    </div>
+</div>
+<script>
+    const deleteButton = document.querySelector('.delete-account');
+    deleteButton.addEventListener('click', function(event) {
+        if (!confirm('Are you sure you want to delete your account? This cannot be undone.')) {
+            event.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>
 

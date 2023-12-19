@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Analysis Pro</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main.css') }}">
+    <title>Poker Analysis Pro - Register</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/login.css">
 </head>
-
 <body>
-    <div class="header">
-        <h1>Register</h1>
+<header class="header">
+    <h1>Poker Analysis Pro</h1>
+
+</header>
+
+
+<div class="login-container">
+    {% if error %}
+    <div class="error-message">
+        <span>{{ error }}</span>
     </div>
-
-    <div class="register-container">
-        {% if error %}
-            <div class="error-message">
-                <span>{{ error }}</span>
-            </div>
-        {% endif %}
-
-        <form action="/register" method="POST">
+    {% endif %}
+    <form action="/register" method="POST" class="login-form">
+        <div class="form-group">
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username" value="" required>
-    
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" value="" required>
-    
-            <input class="button" type="submit" value="Register">
-        </form>
-    </div>
-</body>
+            <input type="text" name="username" id="username" required>
+        </div>
 
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+
+        <div class="form-actions">
+            <input class="button" type="submit" value="Register">
+        </div>
+    </form>
+</div>
+
+</body>
 </html>
+
+
