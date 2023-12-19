@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Poker Analysis Pro</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+</head>
+<body>
+
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
+
+<main class="content-container">
+    <section class="news-container">
+        <h2>Poker News</h2>
+        {% if newsItems %}
+        <ul>
+            {% for newsItem in newsItems %}
+            <li>
+                <a href="{{ newsItem.link }}" target="_blank">{{ newsItem.title }}</a>
+                <p>{{ newsItem.contentSnippet }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No news items available.</p>
+        {% endif %}
+    </section>
+</main>
+
+</body>
+</html>
+
+
+
+
+
+
+

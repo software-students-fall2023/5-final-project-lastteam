@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Analysis Pro</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/login.css">
+</head>
+<body>
+
+<header class="header">
+    <h1>Poker Analysis Pro</h1>
+    <nav class="header-nav">
+
+        <!-- Add more links as needed -->
+        <a href="/register" class="nav-item">Register</a>
+    </nav>
+</header>
+
+<div class="login-container">
+    {% if error %}
+    <div class="error-message">
+        <span>{{ error }}</span>
+    </div>
+    {% endif %}
+    <form action="/login" method="POST" class="login-form">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button id="login-button" class="button" type="submit">Login</button>
+    </form>
+</div>
+
+</body>
+</html>
+

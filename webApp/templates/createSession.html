@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Session</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+</head>
+<body>
+
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
+
+<main class="main-content">
+    <div class="createSession-container">
+        <form action="/create-session" method="post" id="create-session-form">
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="buyIn">Buy in:</label>
+                <input type="number" id="buyIn" name="buyIn" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cashOut">Cash out:</label>
+                <input type="number" id="cashOut" name="cashOut" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+
+            <button type="submit" class="button">Create Session</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

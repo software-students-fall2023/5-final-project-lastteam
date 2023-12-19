@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chart Page</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
+
+<div class="chart-container">
+    <h2 class="chart-title">Profit Over Time</h2>
+    <canvas id="lineChart"></canvas>
+    <h2 class="chart-title">Monthly Profit</h2>
+    <canvas id="histogram"></canvas>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Assume `lineChartData` and `histogramData` are passed from Flask and available in the template
+        const lineChartData = JSON.parse('{{ line_chart_data | safe }}');
+        const histogramData = JSON.parse('{{ histogram_data | safe }}');
+
+        const lineChartCtx = document.getElementById('lineChart').getContext('2d');
+        const histogramCtx = document.getElementById('histogram').getContext('2d');
+
+        // Render Line Chart
+        new Chart(lineChartCtx, {
+            type: 'line',
+            data: {
+                labels: lineChartData.map(item => item.date),
+                datasets: [{
+                    label: 'Profit over Time',
+                    data: lineChartData.map(item => item.profit),
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Render Histogram
+        new Chart(histogramCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(histogramData),
+                datasets: [{
+                    label: 'Monthly Profit',
+                    data: Object.values(histogramData),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

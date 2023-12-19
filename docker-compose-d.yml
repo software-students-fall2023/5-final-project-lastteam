@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  web-app:
+    image: wwxihan/pocker-app:latest
+    container_name: web-app-container
+    ports:
+      - "5001:5000"
+    depends_on:
+      - db
+
+  db:
+    image: mongo:4.0-xenial
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:

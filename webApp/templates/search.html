@@ -1,0 +1,42 @@
+<!-- search.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+    <title>search</title>
+</head>
+<body>
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
+<h1 class="subHeader">Search for Sessions</h1>
+
+<form action="/search-result" method="POST">
+    <label for="date">Date:</label>
+    <input type="date" name="date" id="date">
+
+    <label for="buyIn">Buy In:</label>
+    <input type="number" name="buyIn" id="buyIn">
+
+    <label for="location">Location:</label>
+    <input type="text" name="location" id="location">
+
+    <label for="profitLossSelection">Profit/Loss:</label>
+    <select name="profitLossSelection" id="profitLossSelection">
+        <option value="">--Please choose an option--</option>
+        <option value="profit">Profit</option>
+        <option value="loss">Loss</option>
+    </select>
+
+    <button type="submit">Search</button>
+</form>
+</body>
+</html>
+

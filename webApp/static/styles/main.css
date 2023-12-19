@@ -1,0 +1,295 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-image: url("../images/appBackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #f0f0f0;
+}
+
+a {
+    color: #add8e6;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff4500;
+}
+
+.header {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.header h1 {
+    color: white;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.header-nav {
+    display: flex;
+}
+
+.nav-item {
+    padding: 0 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-item:hover {
+    background-color: #555;
+}
+
+.content-container {
+    padding-top: 60px; /* Same as header height to avoid overlap */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    margin-left: auto; /* Automatically sizes the left margin */
+    margin-right: auto; /* Automatically sizes the right margin */
+    width: 100%;
+    max-width: 800px; /* Adjust max width as needed */
+}
+
+.news-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.news-container ul {
+    list-style-type: none;
+}
+
+.news-container li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.news-container li a {
+    font-weight: bold;
+    color: #add8e6;
+}
+
+.news-container li p {
+    margin-top: 5px;
+}
+
+/* Add this to your main.css file */
+.subHeader {
+    text-align: center;
+    padding: 20px;
+}
+
+.userSettings-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px; /* Adjust this value so it's below your header */
+}
+
+.settings-options {
+    width: 100%;
+    max-width: 600px; /* Adjust as needed */
+    text-align: center;
+}
+
+.button {
+    margin: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    display: inline-block; /* For anchor buttons */
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.delete-account {
+    background-color: #ff4444; /* Red color for delete button */
+}
+
+.delete-account:hover {
+    background-color: #cc0000;
+}
+
+.main-content {
+    padding-top: 60px; /* Adjust based on your header's height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* Subtract the header height */
+    padding: 20px;
+}
+
+.changeUsername-container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto; /* Center in the available space */
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.main-content {
+    padding-top: 60px; /* Adjust this value based on your header's height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.createSession-container {
+    width: 100%;
+    max-width: 500px; /* Adjust width as needed */
+    padding: 20px;
+    margin: 0 auto; /* Center in the viewport */
+    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.mySessions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+    flex-direction: column;
+}
+
+.session-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ul.sessions-list {
+    list-style-type: none; /* Removes the default list bullet points */
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+}
+
+ul.sessions-list li {
+    background-color: #f9f9f9; /* Light grey background for each list item */
+    border: 1px solid #ddd; /* Border for each list item */
+    padding: 15px; /* Padding inside each list item */
+    margin-bottom: 10px; /* Space between list items */
+    border-radius: 4px; /* Rounded corners for the list items */
+}
+
+ul.sessions-list li p {
+    margin: 5px 0; /* Vertical margin for each paragraph */
+    color: #333; /* Darker text color for readability */
+    font-size: 1rem; /* Font size */
+}
+
+ul.sessions-list li p:first-child {
+    font-weight: bold; /* Make the first piece of information bold (e.g., the date) */
+}
+
+/* Optional: If you want to add hover effects */
+ul.sessions-list li:hover {
+    background-color: #e6e6e6; /* Slightly darker background on hover */
+}
+
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+}
+
+.home-container section {
+    text-align: center;
+    padding: 20px;
+}
+
+.button-container {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+
