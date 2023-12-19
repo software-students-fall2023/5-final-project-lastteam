@@ -2,44 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-* {
-    color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
-input,
-textarea,
-select,
-option {
-    color: initial;
-    text-shadow: none;
-}
-
-.button,
-a.button {
-    display: inline-block;
-    padding: 10px 15px;
-    background-color: transparent;
-    color: white;
-    border: 2px solid transparent;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: normal;
-    margin: 0;
-    transition: all 0.3s ease;
-}
-
-.button:hover,
-a.button:hover {
-    background-color: rgba(50, 205, 50, 0.1);
-    color: limegreen;
-    border: 2px solid limegreen;
-    text-decoration: none;
+    font-family: 'Arial', sans-serif;
 }
 
 body {
@@ -48,19 +11,31 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    color: #f0f0f0;
+}
+
+a {
+    color: #add8e6;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff4500;
 }
 
 .header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
     z-index: 10;
-    background-color: transparent;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
@@ -69,107 +44,222 @@ body {
     font-size: 2rem;
 }
 
-.login-container {
+.header-nav {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
 }
 
-.login-container form {
-    display: flex;
-    flex-direction: column;
+.nav-item {
+    padding: 0 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-item:hover {
+    background-color: #555;
+}
+
+.content-container {
+    padding-top: 60px; /* Same as header height to avoid overlap */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    margin-left: auto; /* Automatically sizes the left margin */
+    margin-right: auto; /* Automatically sizes the right margin */
     width: 100%;
-    max-width: 400px;
+    max-width: 800px; /* Adjust max width as needed */
 }
 
-.login-container form div {
-    margin-bottom: 20px;
+.news-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
 }
 
-.login-container form div label {
+.news-container ul {
+    list-style-type: none;
+}
+
+.news-container li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.news-container li a {
+    font-weight: bold;
+    color: #add8e6;
+}
+
+.news-container li p {
+    margin-top: 5px;
+}
+
+/* Add this to your main.css file */
+.subHeader {
+    text-align: center;
+    padding: 20px;
+}
+
+.userSettings-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px; /* Adjust this value so it's below your header */
+}
+
+.settings-options {
+    width: 100%;
+    max-width: 600px; /* Adjust as needed */
+    text-align: center;
+}
+
+.button {
+    margin: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    display: inline-block; /* For anchor buttons */
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.delete-account {
+    background-color: #ff4444; /* Red color for delete button */
+}
+
+.delete-account:hover {
+    background-color: #cc0000;
+}
+
+.main-content {
+    padding-top: 60px; /* Adjust based on your header's height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* Subtract the header height */
+    padding: 20px;
+}
+
+.changeUsername-container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto; /* Center in the available space */
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
     display: block;
     margin-bottom: 5px;
-    font-size: 1.1rem;
 }
 
-.login-container form div input[type=text],
-.login-container form div input[type=password] {
+.form-group input[type="text"] {
     width: 100%;
     padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: black;
-    background-color: white;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.login-container form .button {
-    padding: 10px 15px;
-    margin-top: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
+.button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.login-container a.button {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 1rem;
+.button:hover {
+    background-color: #0056b3;
 }
 
-.register-container {
+.main-content {
+    padding-top: 60px; /* Adjust this value based on your header's height */
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    align-items: center;
 }
 
-.register-container button {
-    margin: 10px 0;
+.createSession-container {
+    width: 100%;
+    max-width: 500px; /* Adjust width as needed */
+    padding: 20px;
+    margin: 0 auto; /* Center in the viewport */
+    background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.error-message span {
-    color: red;
+.form-group {
+    margin-bottom: 15px;
 }
 
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    right: 0;
-    top: 0;
-    background-color: transparent;
-    overflow-x: hidden;
-    padding-top: 80px;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
 }
 
-.sidebar-title {
-    color: white;
-    text-align: center;
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="text"] {
+    width: 100%;
     padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.sidebar-nav {
+.button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.mySessions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+    flex-direction: column;
+}
+
+.session-options {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.sidebar-nav .nav-item {
-    background-color: transparent;
-    color: white;
-    border: 2px solid transparent;
-    padding: 10px;
-    text-decoration: none;
-    font-size: 18px;
-    display: block;
-    transition: all 0.3s ease;
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
 }
 
-.test-h2 {
-    margin-top: 100px;
+.home-container section {
+    text-align: center;
+    padding: 20px;
+}
+
+.button-container {
+    display: inline-block;
+    margin-top: 20px;
 }

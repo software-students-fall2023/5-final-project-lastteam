@@ -2,8 +2,6 @@ version: "3.8"
 
 services:
   web-app:
-    build:
-      context: ./webApp
     image: wwxihan/pocker-app:latest
     container_name: web-app-container
     ports:

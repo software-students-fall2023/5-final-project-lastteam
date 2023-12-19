@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Poker Analysis Pro</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
 </head>
 <body>
-    <div class="sidebar">
 
-    <h2 class="sidebar-title">Menu</h2>
-    <nav class="sidebar-nav">
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
         <a href="/my-sessions" class="nav-item">Session</a>
         <a href="/search" class="nav-item">Search</a>
         <a href="/settings" class="nav-item">User Settings</a>
         <a href="/pokerMain" class="nav-item">Poker Main</a>
         <a href="/logout" class="nav-item">Log Out</a>
-        </nav>  
-    </div>
+    </nav>
+</header>
 
-    <div class="header">
-        <h1>{{ username }}'s Poker Home</h1>
-    </div>
+<main class="content-container">
+    <section class="news-container">
+        <h2>Poker News</h2>
+        {% if newsItems %}
+        <ul>
+            {% for newsItem in newsItems %}
+            <li>
+                <a href="{{ newsItem.link }}" target="_blank">{{ newsItem.title }}</a>
+                <p>{{ newsItem.contentSnippet }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No news items available.</p>
+        {% endif %}
+    </section>
+</main>
 
-    <div class="content-container">
-        <div class="news-container">
-            <h2>Poker News</h2>
-            {% if newsItems %}
-                <ul>
-                    {% for newsItem in newsItems %}
-                        <li>
-                            <a href="{{ newsItem.link }}" target="_blank">{{ newsItem.title }}</a>
-                            <p>{{ newsItem.contentSnippet }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No news items available.</p>
-            {% endif %}  
-        </div>
-    </div>
 </body>
 </html>
 

@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/styles/main.css">
+    <title>My Sessions</title>
 </head>
 <body>
-    <header class="header">
-        <h1>Session Manager</h1>
-    </header>
+<header class="header">
+    <h1>{{ username }}'s Poker Home</h1>
+    <nav class="header-nav">
+        <a href="/my-sessions" class="nav-item">Session</a>
+        <a href="/search" class="nav-item">Search</a>
+        <a href="/settings" class="nav-item">User Settings</a>
+        <a href="/pokerMain" class="nav-item">Poker Main</a>
+        <a href="/logout" class="nav-item">Log Out</a>
+    </nav>
+</header>
 
     <aside class="sidebar">
         <h2 class="sidebar-title">Menu</h2>
@@ -30,7 +41,10 @@
             </div>
            
         </div>
+
     </div>
+</div>
 </body>
 </html>
+
 

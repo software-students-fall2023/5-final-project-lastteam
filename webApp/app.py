@@ -4,11 +4,11 @@ from bson.objectid import ObjectId
 import bcrypt
 
 from pokerNewsFetcher import get_poker_news
+
 # from your_poker_odds_api_module import get_poker_odds
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = "secret"  # [TO-DO] add secretkey_generator.py
-
 
 # MongoDB configuration
 client = MongoClient("db", 27017)  # for development, [TO-DO] add configurations
@@ -61,7 +61,8 @@ def poker_main():
         #     newsItems=news_items,
         #     odds=odds,
         # )
-        return render_template("pokerMain.html", newsItems=news_items, username=session["username"], error=error_message if 'error_message' in locals() else None)
+        return render_template("pokerMain.html", newsItems=news_items, username=session["username"],
+                               error=error_message if 'error_message' in locals() else None)
 
     return redirect("/login")
 
@@ -131,7 +132,6 @@ def register():
 
 
 @app.route("/logout")
-
 def logout():
     session.pop("user_id", None)
     session.pop("username", None)
@@ -253,14 +253,14 @@ def session_data():
     return jsonify({"sessions": list(user_sessions)})
 
 
-
 from bson.json_util import dumps
 from datetime import datetime
+
 
 @app.route("/data-analysis")
 def data_analysis():
     if is_authenticated():
-        user_id = session.get("user_id")
+        user_id = sessions.get("user_id")
 
         # Fetch sessions and process the data for charts
         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
@@ -278,8 +278,8 @@ def data_analysis():
             profit = session['cashOut'] - session['buyIn']
             histogram_data[month] = histogram_data.get(month, 0) + profit
 
-        return render_template("chartPage.html", 
-                               line_chart_data=dumps(line_chart_data), 
+        return render_template("chartPage.html",
+                               line_chart_data=dumps(line_chart_data),
                                histogram_data=dumps(histogram_data))
 
 
@@ -312,8 +312,6 @@ def change_password():
     return render_template("changePassword.html")
 
 
-
-
 @app.route("/settings/change-username", methods=["GET", "POST"])
 def change_username():
     if not is_authenticated():
@@ -334,10 +332,8 @@ def change_username():
     return render_template("changeUsername.html")
 
 
-
-
 @app.route("/delete-account", methods=["POST"])
-def delete_account(): 
+def delete_account():
     if is_authenticated():
         user_id = session.get("user_id")
         poker_users.delete_one({"_id": ObjectId(user_id)})
@@ -376,7 +372,7 @@ def search_result():
     if date:
         query["date"] = date
     if buy_in:
-        query["buyIn"] = float(buy_in)  
+        query["buyIn"] = float(buy_in)
     if location:
         query["location"] = location
     if profit_loss_selection:
@@ -389,7 +385,6 @@ def search_result():
     found_sessions = sessions.find(query)
 
     return render_template("searchResult.html", sessions=list(found_sessions))
-
 
 
 if __name__ == "__main__":
