@@ -17,7 +17,7 @@ def test_login(username, password):
 
 # Function to test change password
 def test_change_password(old_password, new_password):
-    driver.get("http://localhost:5000/settings/change-password")
+    driver.get("http://localhost:5001/settings/change-password")
     driver.find_element(By.ID, "currentPassword").send_keys(old_password)
     driver.find_element(By.ID, "newPassword").send_keys(new_password)
     driver.find_element(By.ID, "change-password-button").click()
@@ -26,7 +26,7 @@ def test_change_password(old_password, new_password):
 
 # Function to test change username
 def test_change_username(new_username):
-    driver.get("http://localhost:5000/settings/change-username")
+    driver.get("http://localhost:5001/settings/change-username")
     driver.find_element(By.ID, "newUsername").send_keys(new_username)
     driver.find_element(By.ID, "change-username-button").click()
     time.sleep(2)  # Wait for response

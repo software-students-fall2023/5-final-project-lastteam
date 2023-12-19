@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import bcrypt
@@ -351,7 +351,7 @@ def search():
         search_query = request.form.get("search_query")
         return redirect(url_for("search_result", query=search_query))
 
-    return render_template("search.html")
+    return render_template("search.html", username=session["username"])
 
 
 @app.route("/search-result", methods=["POST"])
@@ -382,7 +382,7 @@ def search_result():
     # Perform the search
     found_sessions = sessions.find(query)
 
-    return render_template("searchResult.html", sessions=list(found_sessions))
+    return render_template("searchResult.html", sessions=list(found_sessions), username=session["username"])
 
 
 if __name__ == "__main__":
