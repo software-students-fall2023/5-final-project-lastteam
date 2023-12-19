@@ -188,16 +188,33 @@ def create_session():
         return redirect("/login")
 
     if request.method == "POST":
+        # Extract session information from form data
+        user_id = session.get("user_id")
+        date = request.form.get("date")
+        buyIn = float(request.form.get("buyIn"))
+        cashOut = float(request.form.get("cashOut"))
+        location = request.form.get("location")
+
+        # Calculate profit
+        profit = cashOut - buyIn
+
+        # Prepare session data with calculated profit
         session_data = {
-            "user_id": ObjectId(session.get("user_id")),
-            "date": request.form.get("date"),
-            "buyIn": request.form.get("buyIn"),
-            "cashOut": request.form.get("cashOut"),
+            "user_id": ObjectId(user_id),
+            "date": date,
+            "buyIn": buyIn,
+            "cashOut": cashOut,
+            "profit": profit,
+            "location": location
         }
+
+        # Insert the session data into the database
         sessions.insert_one(session_data)
+
         return redirect("/my-sessions")
 
     return render_template("createSession.html")
+
 
 
 @app.route("/view-sessions")
