@@ -243,7 +243,7 @@ from datetime import datetime
 @app.route("/data-analysis")
 def data_analysis():
     if is_authenticated():
-        user_id = session.get("user_id")
+        user_id = sessions.get("user_id")
 
         # Fetch sessions and process the data for charts
         user_sessions = sessions.find({"user_id": ObjectId(user_id)})
