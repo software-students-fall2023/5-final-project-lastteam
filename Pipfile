@@ -13,6 +13,9 @@ werkzeug = "*"
 flask-session = "*"
 python-dotenv = "*"
 bcrypt = "*"
+feedparser = "*"
+pytest = "*"
+coverage = "*"
 
 [dev-packages]
 

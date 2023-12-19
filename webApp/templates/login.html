@@ -4,31 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poker Analysis Pro</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="../static/styles/login.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Poker Analysis Pro</h1>
-    </div>
 
-    <div class="login-container">
-        {% if error %}
-            <div class="error-message">
-                <span>{{ error }}</span>
-            </div>
-        {% endif %}
-        <form action="/login" method="POST">
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button class="button" type="submit">Login</button>
-            <a href="/register" class="button">Register</a>
-        </form>
+<header class="header">
+    <h1>Poker Analysis Pro</h1>
+    <nav class="header-nav">
+
+        <!-- Add more links as needed -->
+        <a href="/register" class="nav-item">Register</a>
+    </nav>
+</header>
+
+<div class="login-container">
+    {% if error %}
+    <div class="error-message">
+        <span>{{ error }}</span>
     </div>
+    {% endif %}
+    <form action="/login" method="POST" class="login-form">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button class="button" type="submit">Login</button>
+    </form>
+</div>
+
 </body>
 </html>
+
